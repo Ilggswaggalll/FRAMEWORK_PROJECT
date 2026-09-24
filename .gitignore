@@ -8,6 +8,9 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 
+# Pytest
+.pytest_cache/
+
 # IDE
 .vscode/
 .idea/
