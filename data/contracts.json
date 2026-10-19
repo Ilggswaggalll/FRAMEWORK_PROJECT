@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "number": "Д-2025-001",
+    "contractor_id": 1,
+    "amount": 150000.0,
+    "start_date": "01.01.2025",
+    "end_date": "31.12.2027"
+  },
+  {
+    "id": 2,
+    "number": "Д-2025-002",
+    "contractor_id": 2,
+    "amount": 45000.5,
+    "start_date": "15.03.2025",
+    "end_date": "31.12.2024"
+  },
+  {
+    "id": 3,
+    "number": "Д-2025-003",
+    "contractor_id": 3,
+    "amount": 320000.0,
+    "start_date": "01.06.2025",
+    "end_date": "01.06.2028"
+  },
+  {
+    "id": 4,
+    "number": "Д-2024-045",
+    "contractor_id": 1,
+    "amount": 78000.0,
+    "start_date": "10.10.2024",
+    "end_date": "10.10.2024"
+  },
+  {
+    "id": 5,
+    "number": "Д-2025-004",
+    "contractor_id": 4,
+    "amount": 2500000.0,
+    "start_date": "20.02.2025",
+    "end_date": "20.02.2026"
+  }
+]

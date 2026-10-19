@@ -4,8 +4,8 @@ import json
 import os
 
 from models import Contract, Contractor, Payment
+from models.contracts import find_contract, find_contract_by_id
 from models.contractors import find_contractor_by_id
-from models.contracts import find_contract
 
 DATA_DIR = "data"
 

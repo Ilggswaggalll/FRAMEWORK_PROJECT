@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "contract_id": 1,
+    "amount": 50000.0,
+    "payment_date": "15.02.2025"
+  },
+  {
+    "id": 2,
+    "contract_id": 1,
+    "amount": 100000.0,
+    "payment_date": "20.06.2025"
+  },
+  {
+    "id": 3,
+    "contract_id": 2,
+    "amount": 45000.5,
+    "payment_date": "01.04.2025"
+  },
+  {
+    "id": 4,
+    "contract_id": 3,
+    "amount": 160000.0,
+    "payment_date": "10.07.2025"
+  },
+  {
+    "id": 5,
+    "contract_id": 5,
+    "amount": 250000.0,
+    "payment_date": "05.03.2025"
+  },
+  {
+    "id": 6,
+    "contract_id": 5,
+    "amount": 250000.0,
+    "payment_date": "10.09.2025"
+  }
+]
