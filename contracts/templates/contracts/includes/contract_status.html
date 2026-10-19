@@ -1,0 +1,13 @@
+{% if contract.status == "Просрочен" %}
+    <span class="badge bg-danger contract-status contract-status-overdue">
+        {{ contract.status }}
+    </span>
+{% elif contract.status == "Истекает сегодня" %}
+    <span class="badge bg-warning text-dark contract-status contract-status-today">
+        {{ contract.status }}
+    </span>
+{% else %}
+    <span class="badge bg-success contract-status contract-status-active">
+        {{ contract.status }}
+    </span>
+{% endif %}

@@ -1,0 +1,14 @@
+<article class="card mb-3">
+    <div class="card-body">
+        <h2 class="card-title h5">
+            {{ contractor.name|default:"Без названия" }}
+        </h2>
+        <p class="card-text">
+            <strong>ИНН:</strong> {{ contractor.inn }}
+        </p>
+        <a href="{% url 'contractors:detail' contractor.id %}"
+           class="btn btn-primary btn-sm">
+            Подробнее
+        </a>
+    </div>
+</article>

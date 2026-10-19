@@ -1,0 +1,25 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.project-logo {
+    width: 160px;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.contract-status {
+    font-weight: 600;
+}
+
+.contract-status-overdue {
+    color: #ffffff;
+}
+
+.contract-status-active {
+    color: #ffffff;
+}

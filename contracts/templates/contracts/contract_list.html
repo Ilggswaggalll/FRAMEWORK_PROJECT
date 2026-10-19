@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Договоры — Система учёта договоров{% endblock %}
+
+{% block content %}
+<h1>Договоры</h1>
+<p>Всего договоров: {{ contracts|length }}</p>
+
+<ul class="list-group">
+{% for contract in contracts %}
+    <li class="list-group-item">
+        <a href="{% url 'contracts:detail' contract.id %}">
+            №{{ contract.number }}
+        </a>
+        — {{ contract.contractor.name }}
+        — {{ contract.total_amount|floatformat:2 }} руб. с НДС
+        — {% include "contracts/includes/contract_status.html" %}
+    </li>
+{% empty %}
+    <li class="list-group-item">Договоры не найдены.</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if contractor %}{{ contractor.name }}{% else %}Контрагент не найден{% endif %} — Система учёта договоров
+{% endblock %}
+
+{% block content %}
+{% if contractor %}
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">{{ contractor.name }}</h1>
+        <p class="card-text"><strong>ID:</strong> {{ contractor.id }}</p>
+        <p class="card-text"><strong>ИНН:</strong> {{ contractor.inn }}</p>
+    </div>
+</div>
+{% else %}
+<h1 class="text-danger">Контрагент не найден</h1>
+<p>Контрагент с указанным идентификатором отсутствует.</p>
+{% endif %}
+
+<a href="{% url 'contractors:list' %}" class="btn btn-outline-secondary mt-3">
+    ← к списку контрагентов
+</a>
+{% endblock %}

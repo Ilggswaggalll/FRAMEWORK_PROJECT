@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Платежи — Система учёта договоров{% endblock %}
+
+{% block content %}
+<h1>Платежи</h1>
+<p>Всего платежей: {{ payments|length }}</p>
+
+<ul class="list-group">
+{% for payment in payments %}
+    <li class="list-group-item">
+        Платёж №{{ payment.id }} по договору
+        <a href="{% url 'contracts:detail' payment.contract.id %}">
+            №{{ payment.contract.number }}
+        </a>
+        — {{ payment.amount|floatformat:2 }} руб.
+        — {{ payment.payment_date }}
+    </li>
+{% empty %}
+    <li class="list-group-item">Платежи не найдены.</li>
+{% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Главная — Система учёта договоров{% endblock %}
+
+{% block content %}
+<h1 class="display-4">Система учёта договоров</h1>
+<p class="lead">Учёт договоров, контрагентов и платежей организации.</p>
+
+<p>Основные разделы:</p>
+<a href="{% url 'contractors:list' %}" class="btn btn-primary me-2">
+    Контрагенты
+</a>
+<a href="{% url 'contracts:list' %}" class="btn btn-secondary me-2">
+    Договоры
+</a>
+<a href="{% url 'payments:list' %}" class="btn btn-outline-secondary">
+    Платежи
+</a>
+{% endblock %}

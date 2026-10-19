@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Контрагенты — Система учёта договоров{% endblock %}
+
+{% block content %}
+<h1>Контрагенты</h1>
+<p>Всего контрагентов: {{ contractors|length }}</p>
+
+{% for contractor in contractors %}
+    {% include "contractors/includes/contractor_card.html" %}
+{% empty %}
+    <p>Контрагенты не найдены.</p>
+{% endfor %}
+{% endblock %}

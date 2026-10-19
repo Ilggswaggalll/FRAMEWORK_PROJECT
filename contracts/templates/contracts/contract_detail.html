@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if contract %}Договор №{{ contract.number }}{% else %}Договор не найден{% endif %} — Система учёта договоров
+{% endblock %}
+
+{% block content %}
+{% if contract %}
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title">Договор №{{ contract.number }}</h1>
+        <p class="card-text">
+            <strong>Контрагент:</strong>
+            <a href="{% url 'contractors:detail' contract.contractor.id %}">
+                {{ contract.contractor.name }}
+            </a>
+        </p>
+        <p class="card-text"><strong>Период:</strong>
+            {{ contract.start_date }} — {{ contract.end_date }}
+        </p>
+        <p class="card-text"><strong>Сумма без НДС:</strong>
+            {{ contract.amount|floatformat:2 }} руб.
+        </p>
+        <p class="card-text"><strong>Итого с НДС:</strong>
+            {{ contract.total_amount|floatformat:2 }} руб.
+        </p>
+        <p class="card-text"><strong>Статус:</strong>
+            {% include "contracts/includes/contract_status.html" %}
+        </p>
+    </div>
+</div>
+{% else %}
+<h1 class="text-danger">Договор не найден</h1>
+<p>Договор с указанным идентификатором отсутствует.</p>
+{% endif %}
+
+<a href="{% url 'contracts:list' %}" class="btn btn-outline-secondary mt-3">
+    ← к списку договоров
+</a>
+{% endblock %}
