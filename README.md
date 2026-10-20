@@ -138,63 +138,6 @@ contracts/templates/contracts/includes/contract_status.html —
 context = {"contracts": contracts_list}
 return render(request, "contracts/contract_list.html", context)
 
-В шаблонах используются:
-
-вывод значений — {{ variable }} и обращение к атрибутам объекта
-через точку: {{ contract.contractor.name }};
-
-циклы — {% for contract in contracts %} с блоком {% empty %};
-
-условия — {% if contract %} / {% elif %} / {% else %};
-
-именованные URL — {% url %};
-
-фильтры шаблонов.
-
-Фильтры шаблонов
-В проекте используются стандартные фильтры DTL:
-
-{{ contractors|length }} — количество элементов списка;
-
-{{ contractor.name|default:"Без названия" }} — значение по умолчанию,
-если поле пустое или отсутствует;
-
-{{ contract.total_amount|floatformat:2 }} — число с двумя знаками
-после запятой.
-
-Фильтры применяются для представления данных и не содержат
-бизнес-логики приложения.
-
-
-Статические файлы
-Статические файлы приложения homepage расположены в каталоге
-homepage/static/homepage/:
-
-homepage/static/homepage/css/style.css — собственные стили проекта;
-
-homepage/static/homepage/js/main.js — автоматическая подстановка
-текущего года в подвал страницы;
-
-homepage/static/homepage/img/logo.png — изображение логотипа.
-
-В base.html статические файлы подключаются через {% load static %}
-и {% static %}:
-{% load static %}
-<link rel="stylesheet" href="{% static 'homepage/css/style.css' %}">
-
-Обработка ошибки 404
-Для отсутствующих объектов (контрагент или договор с несуществующим
-идентификатором) view-функция возвращает render(...) со статусом
-status=404 и передаёт в шаблон значение None — шаблон показывает
-ветку {% else %} с сообщением «не найден».
-
-Для отсутствующих маршрутов используется handler404,
-объявленный в contractly/urls.py и указывающий на
-homepage.views.page_not_found, который рендерит
-homepage/templates/homepage/404.html.
-
-Формирование HTML-строк в Python-коде view-функций больше не используется:
-все страницы формируются шаблонами Django.
 
 Структура проекта
 PROJECT/
@@ -259,6 +202,16 @@ PROJECT/
 │   ├── contractors.py
 │   ├── contracts.py
 │   └── payments.py
+├── sql/
+│   ├── schema.sql
+│   └── queries.sql
+├── db/
+│   ├── __init__.py
+│   ├── database.py
+│   └── import_json.py
+├── data/
+│   ├── contracts.sqlite  <-- добавили
+│   ├── contractors.json
 ├── data/
 │   ├── contractors.json
 │   ├── contracts.json
@@ -266,78 +219,7 @@ PROJECT/
 └── tests/
     ├── test_contractors.py
     ├── test_contracts.py
-    └── test_payments.py
+    └── test_payments.py=
 
 
 
-Запуск
-Веб-версия (Django)
-bash
-python manage.py runserver
-После запуска открыть в браузере: http://127.0.0.1:8000/
-
-Консольная версия (сохранена с ПР3)
-bash
-python main.py
-Тесты
-bash
-pytest -v
-Автоматизированные тесты ПР3 проверяют работу классов Contractor,
-Contract, Payment и функций обработки коллекций; после ПР5 и ПР6
-они остаются актуальными и проходят без изменений.
-
-Проверка проекта
-bash
-python manage.py check
-Проверка кода
-bash
-flake8 . --extend-exclude=venv,*/migrations
-Каталоги migrations/ исключены из проверки, поскольку файлы в них
-генерируются Django автоматически.
-
-Git
-Проект развивается в Git-репозитории. Коммиты, относящиеся к отдельным
-практическим работам, помечаются префиксом:
-
-PR3: — объектная модель;
-
-PR5: — Django-проект и веб-страницы;
-
-PR6: — шаблоны Django и статические файлы.
-
-Текущее состояние и план развития
-Реализовано (ПР1–ПР6):
-
-объектная модель Contractor, Contract, Payment;
-
-JSON-хранилище;
-
-консольное приложение с меню;
-
-автоматизированные тесты pytest;
-
-Django-проект contractly и четыре приложения;
-
-двухуровневая маршрутизация URL;
-
-view-функции и страницы предметной области;
-
-динамические URL с конвертером <int:...>;
-
-обработка ошибки 404 (своя страница);
-
-базовый шаблон base.html и наследование шаблонов;
-
-включаемые шаблоны ({% include %});
-
-передача данных через контекст;
-
-циклы {% for %} и условия {% if %};
-
-именованные URL и пространства имён в шаблонах;
-
-фильтры шаблонов (length, default, floatformat);
-
-статические файлы (CSS, JavaScript, изображение);
-
-собственное оформление интерфейса поверх Bootstrap.

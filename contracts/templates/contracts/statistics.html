@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Статистика{% endblock %}
+{% block content %}
+<h1>Статистика по контрагентам</h1>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Контрагент</th>
+            <th>Договоров</th>
+            <th>Сумма (руб.)</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for row in statistics %}
+        <tr>
+            <td>{{ row.contractor_name }}</td>
+            <td>{{ row.contracts_count }}</td>
+            <td>{{ row.total_amount|floatformat:2 }}</td>
+        </tr>
+    {% empty %}
+        <tr><td colspan="3">Нет данных.</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

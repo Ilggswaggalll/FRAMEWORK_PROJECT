@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Просроченные договоры{% endblock %}
+{% block content %}
+<h1>Просроченные договоры</h1>
+<p>Найдено: {{ contracts|length }}</p>
+<ul class="list-group">
+{% for c in contracts %}
+    <li class="list-group-item">
+        <a href="{% url 'contracts:detail' c.id %}">№{{ c.number }}</a>
+        — {{ c.contractor_name }}
+        — срок истёк {{ c.end_date }}
+    </li>
+{% empty %}
+    <li class="list-group-item">Просроченных договоров нет.</li>
+{% endfor %}
+</ul>
+<a href="{% url 'contracts:list' %}" class="btn btn-outline-secondary mt-3">← к списку договоров</a>
+{% endblock %}

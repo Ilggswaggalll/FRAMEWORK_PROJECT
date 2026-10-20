@@ -1,26 +1,39 @@
-"""Страницы контрагентов."""
+"""Страницы контрагентов (данные из SQLite)."""
 
 from django.shortcuts import render
 
-from models.contractors import find_contractor_by_id
-from storage import load_contractors
+from db.database import get_connection
 
 
 def contractors(request):
     """Список контрагентов."""
-    contractors_list = load_contractors()
-    context = {"contractors": contractors_list}
-    return render(request, "contractors/contractor_list.html", context)
+    conn = get_connection()
+    rows = conn.execute("""
+        SELECT id, name, inn
+        FROM contractors
+        ORDER BY name
+    """).fetchall()
+    conn.close()
+    return render(
+        request, "contractors/contractor_list.html", {"contractors": rows}
+    )
 
 
 def contractor_detail(request, contractor_id):
     """Карточка контрагента."""
-    contractors_list = load_contractors()
-    contractor = find_contractor_by_id(contractors_list, contractor_id)
-    context = {"contractor": contractor}
+    conn = get_connection()
+    contractor = conn.execute(
+        """
+        SELECT id, name, inn
+        FROM contractors
+        WHERE id = ?
+        """,
+        (contractor_id,),
+    ).fetchone()
+    conn.close()
     return render(
         request,
         "contractors/contractor_detail.html",
-        context,
+        {"contractor": contractor},
         status=404 if contractor is None else 200,
     )

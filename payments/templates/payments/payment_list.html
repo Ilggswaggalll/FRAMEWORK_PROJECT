@@ -10,8 +10,8 @@
 {% for payment in payments %}
     <li class="list-group-item">
         Платёж №{{ payment.id }} по договору
-        <a href="{% url 'contracts:detail' payment.contract.id %}">
-            №{{ payment.contract.number }}
+        <a href="{% url 'contracts:detail' payment.contract_id %}">
+            №{{ payment.contract_number }}
         </a>
         — {{ payment.amount|floatformat:2 }} руб.
         — {{ payment.payment_date }}

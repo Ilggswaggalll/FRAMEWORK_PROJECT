@@ -11,8 +11,8 @@
         <h1 class="card-title">Договор №{{ contract.number }}</h1>
         <p class="card-text">
             <strong>Контрагент:</strong>
-            <a href="{% url 'contractors:detail' contract.contractor.id %}">
-                {{ contract.contractor.name }}
+            <a href="{% url 'contractors:detail' contract.contractor_id %}">
+                {{ contract.contractor_name }}
             </a>
         </p>
         <p class="card-text"><strong>Период:</strong>
