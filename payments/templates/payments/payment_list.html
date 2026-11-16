@@ -11,10 +11,10 @@
     <li class="list-group-item">
         Платёж №{{ payment.id }} по договору
         <a href="{% url 'contracts:detail' payment.contract_id %}">
-            №{{ payment.contract_number }}
+            №{{ payment.contract.number }}
         </a>
         — {{ payment.amount|floatformat:2 }} руб.
-        — {{ payment.payment_date }}
+        — {{ payment.payment_date|date:"Y-m-d" }}
     </li>
 {% empty %}
     <li class="list-group-item">Платежи не найдены.</li>

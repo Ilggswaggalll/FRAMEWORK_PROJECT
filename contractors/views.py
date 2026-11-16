@@ -1,19 +1,13 @@
-"""Страницы контрагентов (данные из SQLite)."""
+"""Страницы контрагентов."""
 
 from django.shortcuts import render
 
-from db.database import get_connection
+from .models import Contractor
 
 
 def contractors(request):
     """Список контрагентов."""
-    conn = get_connection()
-    rows = conn.execute("""
-        SELECT id, name, inn
-        FROM contractors
-        ORDER BY name
-    """).fetchall()
-    conn.close()
+    rows = Contractor.objects.order_by("name")
     return render(
         request, "contractors/contractor_list.html", {"contractors": rows}
     )
@@ -21,16 +15,7 @@ def contractors(request):
 
 def contractor_detail(request, contractor_id):
     """Карточка контрагента."""
-    conn = get_connection()
-    contractor = conn.execute(
-        """
-        SELECT id, name, inn
-        FROM contractors
-        WHERE id = ?
-        """,
-        (contractor_id,),
-    ).fetchone()
-    conn.close()
+    contractor = Contractor.objects.filter(pk=contractor_id).first()
     return render(
         request,
         "contractors/contractor_detail.html",

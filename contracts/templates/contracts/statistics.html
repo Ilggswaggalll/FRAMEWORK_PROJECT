@@ -13,7 +13,7 @@
     <tbody>
     {% for row in statistics %}
         <tr>
-            <td>{{ row.contractor_name }}</td>
+            <td>{{ row.name }}</td>
             <td>{{ row.contracts_count }}</td>
             <td>{{ row.total_amount|floatformat:2 }}</td>
         </tr>
@@ -22,4 +22,5 @@
     {% endfor %}
     </tbody>
 </table>
+<p>Сумма всех договоров без НДС: {{ total_amount|floatformat:2 }} руб.</p>
 {% endblock %}

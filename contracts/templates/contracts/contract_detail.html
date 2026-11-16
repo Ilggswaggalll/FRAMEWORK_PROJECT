@@ -12,11 +12,11 @@
         <p class="card-text">
             <strong>Контрагент:</strong>
             <a href="{% url 'contractors:detail' contract.contractor_id %}">
-                {{ contract.contractor_name }}
+                {{ contract.contractor.name }}
             </a>
         </p>
         <p class="card-text"><strong>Период:</strong>
-            {{ contract.start_date }} — {{ contract.end_date }}
+            {{ contract.start_date|date:"Y-m-d" }} — {{ contract.end_date|date:"Y-m-d" }}
         </p>
         <p class="card-text"><strong>Сумма без НДС:</strong>
             {{ contract.amount|floatformat:2 }} руб.

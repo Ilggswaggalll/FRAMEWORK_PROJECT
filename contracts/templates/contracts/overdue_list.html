@@ -7,8 +7,8 @@
 {% for c in contracts %}
     <li class="list-group-item">
         <a href="{% url 'contracts:detail' c.id %}">№{{ c.number }}</a>
-        — {{ c.contractor_name }}
-        — срок истёк {{ c.end_date }}
+        — {{ c.contractor.name }}
+        — срок истёк {{ c.end_date|date:"Y-m-d" }}
     </li>
 {% empty %}
     <li class="list-group-item">Просроченных договоров нет.</li>

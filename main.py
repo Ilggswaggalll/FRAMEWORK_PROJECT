@@ -6,7 +6,6 @@
 from models import Contract, Contractor, Payment
 from models.contractors import (
     add_contractor,
-    find_contractor,
     show_contractors,
 )
 from models.contracts import (

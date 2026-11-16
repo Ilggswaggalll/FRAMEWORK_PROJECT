@@ -3,7 +3,7 @@
 Учебный проект по дисциплине «Технологии разработки приложений на базе
 фреймворков». Развивается поэтапно: консольное приложение на объектной
 модели (ПР1–ПР3) дополнено веб-интерфейсом на Django (ПР5), веб-интерфейс
-переведён на систему шаблонов Django (ПР6).
+переведён на систему шаблонов Django (ПР6), затем на SQLite (ПР7) и Django ORM (ПР9).
 
 ## Назначение
 
@@ -31,7 +31,8 @@
 - Django Template Language (DTL) — шаблоны;
 - HTML5, CSS3, JavaScript;
 - Bootstrap 5.3 — базовая вёрстка (подключён через CDN);
-- JSON — хранение данных (Django ORM пока не используется);
+- SQLite и Django ORM — хранение данных веб-приложения;
+- JSON — хранение данных консольной версии;
 - pytest — автоматизированные тесты;
 - flake8 — проверка качества кода;
 - Git.
@@ -62,24 +63,51 @@
 
 ## Хранение данных
 
-На текущем этапе данные хранятся в JSON-файлах в каталоге `data/`:
+Веб-версия использует Django ORM и базу `db.sqlite3`. Структуру таблиц
+задают модели в `contractors/models.py`, `contracts/models.py` и `payments/models.py`
+и миграции этих приложений. Договор ссылается на контрагента, платёж — на договор.
+Django защищает связанные записи от удаления через `on_delete=PROTECT`.
 
-- `data/contractors.json` — контрагенты;
-- `data/contracts.json` — договоры;
-- `data/payments.json` — платежи.
+`data/contracts.sqlite` — исходная база ПР7. Команда `import_legacy_data`
+читает её и сохраняет через ORM исходные ID и внешние ключи. Повторный запуск
+пропускает совпадающие записи. Консольная версия (`main.py`) использует JSON
+через `storage.py`.
 
-Загрузка и сохранение выполняются модулем `storage.py`. При загрузке из
-JSON создаются объекты предметной области, при сохранении — объекты
-преобразуются обратно в словари. Для связанных объектов в JSON хранятся
-их идентификаторы (`contractor_id`, `contract_id`).
+## Запуск веб-версии
 
-Django ORM и база данных на данном этапе не используются.
+Из каталога проекта на macOS или Linux выполните:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+python -m pip install -r requirements.txt
+python manage.py migrate
+python manage.py import_legacy_data
+python manage.py runserver
+```
+
+Откройте <http://127.0.0.1:8000/>. Если окружение уже создано и зависимости
+установлены, пропустите создание окружения и установку. Сервер останавливается
+через Ctrl+C. Для входа в `/admin/` создайте локальную учётную запись командой
+`python manage.py createsuperuser`. В админке можно создавать, изменять и удалять записи.
+
+### Проверки
+
+```bash
+python manage.py check
+python manage.py showmigrations
+python manage.py makemigrations --check --dry-run
+python -m pytest -v
+python -m flake8 . --extend-exclude=venv
+```
 
 ## Веб-интерфейс (Django)
 
-Веб-часть реализована на Django 5.2 и использует существующую предметную
-модель ПР3: view-функции вызывают функции из `storage.py` и `models/`,
-а не дублируют логику.
+Список договоров поддерживает поиск по номеру и контрагенту, фильтры по
+контрагенту и статусу, сортировку и пагинацию. Представления передают результаты
+запросов в шаблоны. Для получения связанных записей используется
+`select_related()`, для статистики — `Count`, `Sum`, `annotate()` и
+`aggregate()`.
 
 ### Django-проект
 
@@ -97,6 +125,8 @@ Django ORM и база данных на данном этапе не испол
 | `/contractors/<int:contractor_id>/` | `contractors.views.contractor_detail` | карточка контрагента, при отсутствии — 404 |
 | `/contracts/` | `contracts.views.contracts` | список договоров со статусами |
 | `/contracts/<int:contract_id>/` | `contracts.views.contract_detail` | карточка договора, при отсутствии — 404 |
+| `/contracts/overdue/` | `contracts.views.overdue_contracts` | просроченные договоры |
+| `/contracts/statistics/` | `contracts.views.statistics` | статистика по контрагентам |
 | `/payments/` | `payments.views.payments` | список платежей |
 | `/nonexistent/` | `homepage.views.page_not_found` | собственная страница 404 |
 
@@ -114,8 +144,9 @@ Django ORM и база данных на данном этапе не испол
 ```django
 {% url 'contractors:list' %}
 {% url 'contracts:detail' contract.id %}
+```
 
-Шаблоны Django
+### Шаблоны Django
 Общая структура страниц вынесена в базовый шаблон templates/base.html:
 кодировка, <title>, подключение Bootstrap, собственных CSS и JavaScript,
 навигация, блоки для заголовка и содержимого.
@@ -139,7 +170,9 @@ context = {"contracts": contracts_list}
 return render(request, "contracts/contract_list.html", context)
 
 
-Структура проекта
+## Структура проекта
+
+```text
 PROJECT/
 ├── .gitignore
 ├── README.md
@@ -219,7 +252,5 @@ PROJECT/
 └── tests/
     ├── test_contractors.py
     ├── test_contracts.py
-    └── test_payments.py=
-
-
-
+    └── test_payments.py
+```
