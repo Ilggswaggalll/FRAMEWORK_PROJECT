@@ -1,6 +1,6 @@
 """Страницы контрагентов."""
 
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from .models import Contractor
 
@@ -13,9 +13,11 @@ def contractors(request):
     )
 
 
-def contractor_detail(request, contractor_id):
+def contractor_detail(request, contractor_id, slug=None):
     """Карточка контрагента."""
     contractor = Contractor.objects.filter(pk=contractor_id).first()
+    if contractor and slug is not None and slug != contractor.slug:
+        return redirect(contractor)
     return render(
         request,
         "contractors/contractor_detail.html",

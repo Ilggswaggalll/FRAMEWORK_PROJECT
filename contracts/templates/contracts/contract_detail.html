@@ -11,7 +11,7 @@
         <h1 class="card-title">Договор №{{ contract.number }}</h1>
         <p class="card-text">
             <strong>Контрагент:</strong>
-            <a href="{% url 'contractors:detail' contract.contractor_id %}">
+            <a href="{{ contract.contractor.get_absolute_url }}">
                 {{ contract.contractor.name }}
             </a>
         </p>

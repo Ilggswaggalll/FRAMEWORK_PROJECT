@@ -7,6 +7,7 @@ from . import views
 app_name = "contractors"
 
 urlpatterns = [
+    path("<int:contractor_id>/<str:slug>/", views.contractor_detail, name="detail_slug"),
     path("", views.contractors, name="list"),
     path("<int:contractor_id>/", views.contractor_detail, name="detail"),
 ]

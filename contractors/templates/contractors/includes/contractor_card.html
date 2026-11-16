@@ -6,7 +6,7 @@
         <p class="card-text">
             <strong>ИНН:</strong> {{ contractor.inn }}
         </p>
-        <a href="{% url 'contractors:detail' contractor.id %}"
+        <a href="{{ contractor.get_absolute_url }}"
            class="btn btn-primary btn-sm">
             Подробнее
         </a>

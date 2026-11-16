@@ -4,6 +4,8 @@ from django import forms
 
 from contractors.models import Contractor
 
+from .querysets import ContractStatus
+
 SORT_ORDERS = {
     "number": ("number", "По номеру"),
     "end_date": ("end_date", "По ближайшей дате окончания"),
@@ -27,12 +29,7 @@ class ContractFilterForm(forms.Form):
     )
     status = forms.ChoiceField(
         label="Статус",
-        choices=[
-            ("", "Все статусы"),
-            ("active", "Действует"),
-            ("today", "Истекает сегодня"),
-            ("overdue", "Просрочен"),
-        ],
+        choices=[("", "Все статусы"), *ContractStatus.choices],
         required=False,
     )
     sort = forms.ChoiceField(

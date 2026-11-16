@@ -22,5 +22,10 @@
     {% endfor %}
     </tbody>
 </table>
+<ul>
+    {% for status, count in status_counts %}
+        <li>{{ status }} — {{ count }}</li>
+    {% endfor %}
+</ul>
 <p>Сумма всех договоров без НДС: {{ total_amount|floatformat:2 }} руб.</p>
 {% endblock %}

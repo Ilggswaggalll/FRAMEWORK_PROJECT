@@ -1,4 +1,6 @@
-{% if contract.status == "Просрочен" %}
+{% if contract.is_terminated %}
+    <span class="badge bg-secondary">{{ contract.status }}</span>
+{% elif contract.status == "Просрочен" %}
     <span class="badge bg-danger contract-status contract-status-overdue">
         {{ contract.status }}
     </span>
