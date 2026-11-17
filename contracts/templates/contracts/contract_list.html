@@ -3,9 +3,24 @@
 {% block title %}Договоры — Система учёта договоров{% endblock %}
 
 {% block content %}
-<h1>Договоры</h1>
-<form method="get" action="{% url 'contracts:list' %}" class="mb-3">
-    {{ filter_form.as_p }}
+<div class="page-heading">
+    <h1>Договоры</h1>
+    <div class="actions">
+        <a class="btn btn-outline-secondary" href="{% url 'contracts:overdue' %}">Просроченные</a>
+        <a class="btn btn-outline-secondary" href="{% url 'contracts:statistics' %}">Статистика</a>
+        <a class="btn btn-primary" href="{% url 'contracts:create' %}">Новый договор</a>
+    </div>
+</div>
+<form method="get" action="{% url 'contracts:list' %}" class="surface filter-form mb-3">
+    <div class="filter-grid">
+        {% for field in filter_form %}
+            <div class="field">
+                {{ field.label_tag }}
+                {{ field }}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+    </div>
     <button type="submit" class="btn btn-primary">Применить</button>
     <a href="{% url 'contracts:list' %}" class="btn btn-outline-secondary">Сбросить</a>
 </form>

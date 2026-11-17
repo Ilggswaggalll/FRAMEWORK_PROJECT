@@ -19,6 +19,7 @@ class Contract(models.Model):
     start_date = models.DateField("дата начала")
     end_date = models.DateField("дата окончания")
 
+    image = models.ImageField("изображение", upload_to="contracts/%Y/%m/", blank=True)
     is_terminated = models.BooleanField("расторгнут", default=False)
 
     objects = ContractQuerySet.as_manager()

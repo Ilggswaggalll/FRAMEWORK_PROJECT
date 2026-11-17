@@ -1,19 +1,14 @@
 {% extends "base.html" %}
-
-{% block title %}Главная — Система учёта договоров{% endblock %}
-
+{% block title %}Contractly — Система учёта договоров{% endblock %}
 {% block content %}
-<h1 class="display-4">Система учёта договоров</h1>
-<p class="lead">Учёт договоров, контрагентов и платежей организации.</p>
-
-<p>Основные разделы:</p>
-<a href="{% url 'contractors:list' %}" class="btn btn-primary me-2">
-    Контрагенты
-</a>
-<a href="{% url 'contracts:list' %}" class="btn btn-secondary me-2">
-    Договоры
-</a>
-<a href="{% url 'payments:list' %}" class="btn btn-outline-secondary">
-    Платежи
-</a>
+<section class="hero">
+    <h1>Система учёта<br>договоров</h1>
+    <p>Договоры, контрагенты и платежи организации.</p>
+    <a href="{% url 'contracts:list' %}" class="btn btn-primary">Открыть договоры →</a>
+</section>
+<div class="dashboard-grid">
+    <a class="surface dashboard-link" href="{% url 'contractors:list' %}">Контрагенты <span>→</span></a>
+    <a class="surface dashboard-link" href="{% url 'payments:list' %}">Платежи <span>→</span></a>
+    <a class="surface dashboard-link" href="{% url 'contracts:statistics' %}">Статистика <span>→</span></a>
+</div>
 {% endblock %}

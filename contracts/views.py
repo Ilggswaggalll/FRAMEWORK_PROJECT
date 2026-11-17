@@ -1,13 +1,15 @@
 """Страницы договоров."""
 
+from django.contrib.auth.decorators import permission_required
 from django.core.paginator import Paginator
 from django.db.models import Count, Sum
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 from django.utils import timezone
 
 from contractors.models import Contractor
 
-from .forms import SORT_ORDERS, ContractFilterForm
+from .forms import SORT_ORDERS, ContractFilterForm, ContractForm
 from .models import Contract
 from .querysets import ContractStatus, status_condition
 
@@ -24,6 +26,9 @@ def contracts(request):
         rows = rows.filter(contractor=contractor)
     if status := filters.get("status"):
         rows = rows.with_status(status)
+
+    if end_before := filters.get("end_before"):
+        rows = rows.filter(end_date__lte=end_before)
 
     sort = filters.get("sort") or "number"
     rows = rows.order_by(SORT_ORDERS[sort][0], "pk")
@@ -73,3 +78,35 @@ def statistics(request):
         request, "contracts/statistics.html",
         {"statistics": rows, "total_amount": totals["amount"], "status_counts": status_counts},
     )
+
+
+@permission_required("contracts.add_contract", login_url="admin:login")
+def contract_create(request):
+    return contract_form(request)
+
+
+@permission_required("contracts.change_contract", login_url="admin:login")
+def contract_edit(request, contract_id):
+    return contract_form(request, get_object_or_404(Contract, pk=contract_id))
+
+
+def contract_form(request, contract=None):
+    if request.method == "POST":
+        form = ContractForm(request.POST, request.FILES, instance=contract)
+        if form.is_valid():
+            return redirect(form.save())
+    else:
+        form = ContractForm(instance=contract)
+    return render(
+        request, "contracts/contract_form.html", {"form": form, "contract": contract}
+    )
+
+
+@require_POST
+@permission_required("contracts.change_contract", login_url="admin:login")
+def contract_terminate(request, contract_id):
+    contract = get_object_or_404(Contract, pk=contract_id)
+    if not contract.is_terminated:
+        contract.is_terminated = True
+        contract.save(update_fields=["is_terminated"])
+    return redirect(contract)

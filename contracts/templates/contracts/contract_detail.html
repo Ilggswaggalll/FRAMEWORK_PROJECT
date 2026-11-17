@@ -27,6 +27,20 @@
         <p class="card-text"><strong>Статус:</strong>
             {% include "contracts/includes/contract_status.html" %}
         </p>
+        {% if contract.image %}
+            <img class="contract-image" src="{{ contract.image.url }}" alt="Изображение договора №{{ contract.number }}">
+        {% endif %}
+        {% if perms.contracts.change_contract %}
+        <div class="actions mt-3">
+            <a class="btn btn-primary" href="{% url 'contracts:edit' contract.pk %}">Редактировать</a>
+            {% if not contract.is_terminated %}
+            <form method="post" action="{% url 'contracts:terminate' contract.pk %}">
+                {% csrf_token %}
+                <button class="btn btn-outline-danger" type="submit">Расторгнуть договор</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
     </div>
 </div>
 {% else %}

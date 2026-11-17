@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}{% if contract %}Редактировать договор{% else %}Новый договор{% endif %} — Contractly{% endblock %}
+{% block content %}
+<h1>{% if contract %}Редактировать договор №{{ contract.number }}{% else %}Новый договор{% endif %}</h1>
+<form class="surface edit-form" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    {% for field in form %}
+        <div class="field">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.help_text %}<div class="helptext" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</div>{% endif %}
+            {{ field.errors }}
+        </div>
+    {% endfor %}
+    <div class="actions">
+        <button class="btn btn-primary" type="submit">Сохранить</button>
+        <a class="btn btn-outline-secondary" href="{% if contract %}{{ contract.get_absolute_url }}{% else %}{% url 'contracts:list' %}{% endif %}">Отмена</a>
+    </div>
+</form>
+{% endblock %}

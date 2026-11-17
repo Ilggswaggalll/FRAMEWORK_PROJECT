@@ -10,14 +10,14 @@
     <link rel="stylesheet" href="{% static 'homepage/css/style.css' %}">
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <header class="container py-3">
-        <img src="{% static 'homepage/img/logo.png' %}"
-             alt="Система учёта договоров"
-             class="project-logo">
-        {% include "includes/navigation.html" %}
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{% url 'homepage:index' %}">Contractly<span>.</span></a>
+            {% include "includes/navigation.html" %}
+        </div>
     </header>
 
-    <main class="container flex-grow-1">
+    <main class="container flex-grow-1 content">
         {% block content %}{% endblock %}
     </main>
 
